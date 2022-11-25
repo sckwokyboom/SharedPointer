@@ -17,13 +17,11 @@ public:
 
     // decrements the counter for the old raw pointer, assigns the new one from 'other'
     shared_ptr & operator=(const shared_ptr &other) {
-      // CR: check if it's the same raw pointer
         --*counter_;
-        if (*counter_ == 0) {
+        if ((*counter_ == 0) && (other.data_ != data_)) {
             delete data_;
             delete counter_;
         }
-
         data_ = other.data_;
         counter_ = other.counter_;
         return *this;
@@ -52,12 +50,14 @@ public:
     // counter is decremented, raw pointer is deleted if it was the last shared_ptr
     void reset(T * other) {
         std::cout << "reset" << std::endl;
-        // CR: check if it's the same raw pointer even before updating counter_
+        if (other == data_)
+            return;
+
         --*counter_;
         if ((*counter_ == 0) && (other != data_)) {
             delete data_;
+            ++*counter_;
         }
-        // CR: we started to track new data_, should create new counter for new object and set it to 1
         data_ = other;
     }
 
@@ -77,8 +77,7 @@ public:
     }
 
 private:
-    // CR: redundant init?
-    T *data_ = nullptr;
+    T *data_;
     int *counter_ = nullptr;
 };
 
