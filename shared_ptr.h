@@ -8,7 +8,7 @@ public:
     explicit shared_ptr(T * t = nullptr): data_(t), counter_(new int(1)) {}
 
     // creates new shared_ptr with the same underlying raw pointer, sets counter to 1
-    shared_ptr(const shared_ptr & other): data_(other.data_), counter_(new int(0)) {}
+    shared_ptr(const shared_ptr & other): data_(other.data_), counter_(new int(*other.counter_ + 1)) {}
 
 //    void swap(const shared_ptr &other) {
 //        shared_ptr &tmp_data = other.data_;

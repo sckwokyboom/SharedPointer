@@ -108,13 +108,20 @@ void test9() {
 
 int main() {
     test1();
+    std::cout << std::endl;
     test2();
+    std::cout << std::endl;
 //    test3();
     test4();
+    std::cout << std::endl;
     test5();
+    std::cout << std::endl;
     test6();
+    std::cout << std::endl;
     test7();
+    std::cout << std::endl;
     test8();
+    std::cout << std::endl;
     test9();
   return 0;
 }
