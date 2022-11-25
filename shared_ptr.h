@@ -17,13 +17,15 @@ public:
 
     // decrements the counter for the old raw pointer, assigns the new one from 'other'
     shared_ptr & operator=(const shared_ptr &other) {
-        --*counter_;
-        if ((*counter_ == 0) && (other.data_ != data_)) {
-            delete data_;
-            delete counter_;
+        if (other.data_ != data_) {
+            --*counter_;
+            if (*counter_ == 0) {
+                delete data_;
+                delete counter_;
+            }
+            data_ = other.data_;
+            counter_ = other.counter_;
         }
-        data_ = other.data_;
-        counter_ = other.counter_;
         return *this;
     }
 
@@ -54,11 +56,11 @@ public:
             return;
 
         --*counter_;
-        if ((*counter_ == 0) && (other != data_)) {
+        if (*counter_ == 0) {
             delete data_;
-            ++*counter_;
         }
         data_ = other;
+        *counter_ = 1;
     }
 
     // get the underlying raw pointer. counter is not changed
