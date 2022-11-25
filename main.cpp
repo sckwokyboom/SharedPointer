@@ -11,13 +11,14 @@ struct A {
   }
 
   A(const A & other) {
-    std::cout << "Acopy!" << std::endl;
+    std::cout << "A copy!" << std::endl;
   }
 
   A& operator=(const A & other) {
     std::cout << "A=!" << std::endl;
     return *this;
   }
+
 
   void foo() {
     std::cout << "foo!" << std::endl;
@@ -123,5 +124,7 @@ int main() {
     test8();
     std::cout << std::endl;
     test9();
+    std::cout << std::endl;
+    std::cout << sizeof(A) << std::endl;
   return 0;
 }

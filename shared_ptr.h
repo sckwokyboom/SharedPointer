@@ -8,19 +8,13 @@ public:
     explicit shared_ptr(T * t = nullptr): data_(t), counter_(new int(1)) {}
 
     // creates new shared_ptr with the same underlying raw pointer, sets counter to 1
-    shared_ptr(const shared_ptr & other): data_(other.data_), counter_(new int(*other.counter_ + 1)) {}
-
-//    void swap(const shared_ptr &other) {
-//        shared_ptr &tmp_data = other.data_;
-//        shared_ptr &tmp_counter = other.counter_;
-//        data_ = other.data_;
-//        counter_ = other.counter_;
-//        other.data_ = tmp_data;
-//        other.counter_ = tmp_counter;
-//    }
+    shared_ptr(const shared_ptr & other): data_(other.data_), counter_(other.counter_) {
+        ++counter_;
+        std::cout << "SP copy ctor" << std::endl;
+    }
 
     // decrements the counter for the old raw pointer, assigns the new one from 'other'
-    shared_ptr & operator=(const shared_ptr other) {
+    shared_ptr & operator=(const shared_ptr &other) {
         --*counter_;
         if (*counter_ == 0) {
             delete data_;
