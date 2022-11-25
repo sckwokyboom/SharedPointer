@@ -5,12 +5,14 @@ template<typename T>
 class shared_ptr {
 public:
 
-    explicit shared_ptr(T * t = nullptr): data_(t), counter_(new int(1)) {}
+    explicit shared_ptr(T * t = nullptr): data_(t), counter_(new int(1)) {
+        std::cout << "SP ctor" << std::endl;
+    }
 
     // creates new shared_ptr with the same underlying raw pointer, sets counter to 1
     shared_ptr(const shared_ptr & other): data_(other.data_), counter_(other.counter_) {
-        ++counter_;
-        std::cout << "SP copy ctor" << std::endl;
+        ++*counter_;
+        std::cout << "SP copy ctor" << *counter_ << std::endl;
     }
 
     // decrements the counter for the old raw pointer, assigns the new one from 'other'
@@ -48,11 +50,12 @@ public:
     // replaces current raw pointer with a new one
     // counter is decremented, raw pointer is deleted if it was the last shared_ptr
     void reset(T * other) {
-    if ((*counter_ == 0) && (other != data_)) {
-        delete data_;
-        --counter_;
-    }
-    data_ = other;
+        std::cout << "reset" << std::endl;
+        --*counter_;
+        if ((*counter_ == 0) && (other != data_)) {
+            delete data_;
+        }
+        data_ = other;
     }
 
     // get the underlying raw pointer. counter is not changed

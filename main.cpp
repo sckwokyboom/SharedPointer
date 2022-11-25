@@ -108,23 +108,22 @@ void test9() {
 }
 
 int main() {
+    std::cout << "    1:" << std::endl;
     test1();
-    std::cout << std::endl;
+    std::cout << "    2:" << std::endl;
     test2();
-    std::cout << std::endl;
+    std::cout << "    4:" << std::endl;
 //    test3();
     test4();
-    std::cout << std::endl;
+    std::cout << "    5:" << std::endl;
     test5();
-    std::cout << std::endl;
+    std::cout << "    6:" << std::endl;
     test6();
-    std::cout << std::endl;
+    std::cout << "    7:" << std::endl;
     test7();
-    std::cout << std::endl;
+    std::cout << "    8:" << std::endl;
     test8();
-    std::cout << std::endl;
+    std::cout << "    9:" << std::endl;
     test9();
-    std::cout << std::endl;
-    std::cout << sizeof(A) << std::endl;
   return 0;
 }
