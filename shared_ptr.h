@@ -1,0 +1,84 @@
+#ifndef SHARED_PTR_SHARED_PTR_H
+#define SHARED_PTR_SHARED_PTR_H
+
+template<typename T>
+class shared_ptr {
+public:
+
+    explicit shared_ptr(T * t = nullptr): data_(t), counter_(new int(1)) {}
+
+    // creates new shared_ptr with the same underlying raw pointer, sets counter to 1
+    shared_ptr(const shared_ptr & other): data_(other.data_), counter_(new int(0)) {}
+
+//    void swap(const shared_ptr &other) {
+//        shared_ptr &tmp_data = other.data_;
+//        shared_ptr &tmp_counter = other.counter_;
+//        data_ = other.data_;
+//        counter_ = other.counter_;
+//        other.data_ = tmp_data;
+//        other.counter_ = tmp_counter;
+//    }
+
+    // decrements the counter for the old raw pointer, assigns the new one from 'other'
+    shared_ptr & operator=(const shared_ptr other) {
+        --*counter_;
+        if (*counter_ == 0) {
+            delete data_;
+            delete counter_;
+        }
+
+        data_ = other.data_;
+        counter_ = other.counter_;
+        return *this;
+    }
+
+    // destructs underlying raw pointer if there're no other shared_ptr that owns it
+    // otherwise decrements the counter
+    ~shared_ptr() {
+        --*counter_;
+        if (*counter_ == 0) {
+            delete data_;
+            delete counter_;
+        }
+    }
+
+    // releases stored pointer, replaces it with nullptr.
+    // counter is decremented, but raw pointer is not deleted (even if it was the last shared_ptr).
+    T * release() {
+        T *tmp = data_;
+        data_ = nullptr;
+        --counter_;
+        return tmp;
+    }
+
+    // replaces current raw pointer with a new one
+    // counter is decremented, raw pointer is deleted if it was the last shared_ptr
+    void reset(T * other) {
+    if ((*counter_ == 0) && (other != data_)) {
+        delete data_;
+        --counter_;
+    }
+    data_ = other;
+    }
+
+    // get the underlying raw pointer. counter is not changed
+    T * get() {
+        return data_;
+    }
+
+    // dereference underlying pointer
+    T operator*() {
+        return *data_;
+    }
+
+    // returns underlying pointer in order to access one of its members
+    T * operator->() {
+        return data_;
+    }
+
+private:
+    T *data_ = nullptr;
+    int *counter_ = nullptr;
+};
+
+#endif //SHARED_PTR_SHARED_PTR_H
